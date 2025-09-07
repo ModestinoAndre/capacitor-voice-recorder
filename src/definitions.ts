@@ -16,6 +16,8 @@ export type RecordingOptions =
   | {
       directory: Directory;
       subDirectory?: string;
+      title?: string;
+      message?: string;
     };
 
 export interface GenericResponse {
