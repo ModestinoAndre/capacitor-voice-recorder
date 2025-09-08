@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Base64;
+import android.util.Log;
 
 import com.getcapacitor.JSObject;
 
