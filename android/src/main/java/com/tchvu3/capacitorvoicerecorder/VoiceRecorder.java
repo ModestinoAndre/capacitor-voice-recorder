@@ -35,6 +35,7 @@ public class VoiceRecorder extends Plugin {
     private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
+            Log.d("VoiceRecorder", "onServiceConnected called");
             VoiceRecorderService.LocalBinder binder = (VoiceRecorderService.LocalBinder) service;
             recorderService = binder.getService();
             bound = true;
@@ -66,8 +67,9 @@ public class VoiceRecorder extends Plugin {
 
     @Override
     public void load() {
-        Intent intent = new Intent(getContext(), VoiceRecorderService.class);
-        getContext().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        Context context = getContext();
+        Intent intent = new Intent(context, VoiceRecorderService.class);
+        context.bindService(intent, connection, 0);
     }
 
     private void startService(String title, String message, String directory, String subDirectory) {
@@ -84,7 +86,9 @@ public class VoiceRecorder extends Plugin {
             context.startService(intent);
         }
 
-        context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        new Handler(Looper.getMainLooper()).post(() ->
+                context.bindService(intent, connection, 0)
+        );
     }
 
     @PluginMethod
