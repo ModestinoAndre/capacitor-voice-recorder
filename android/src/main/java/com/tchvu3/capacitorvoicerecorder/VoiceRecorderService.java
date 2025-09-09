@@ -7,19 +7,19 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Base64;
 import android.util.Log;
-
 import com.getcapacitor.JSObject;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
 public class VoiceRecorderService extends Service {
+
     private final IBinder binder = new LocalBinder();
     private RecordOptions options;
 
     public class LocalBinder extends Binder {
+
         public VoiceRecorderService getService() {
             return VoiceRecorderService.this;
         }
@@ -33,10 +33,7 @@ public class VoiceRecorderService extends Service {
 
         String title = intent != null ? intent.getStringExtra("title") : null;
         String message = intent != null ? intent.getStringExtra("message") : null;
-        startForeground(
-                1,
-                VoiceRecorderNotification.createNotification(this, title, message)
-        );
+        startForeground(1, VoiceRecorderNotification.createNotification(this, title, message));
         return START_NOT_STICKY;
     }
 
@@ -88,10 +85,10 @@ public class VoiceRecorderService extends Service {
             }
 
             RecordData recordData = new RecordData(
-                    recordDataBase64,
-                    getMsDurationOfAudioFile(recordedFile.getAbsolutePath()),
-                    "audio/aac",
-                    path
+                recordDataBase64,
+                getMsDurationOfAudioFile(recordedFile.getAbsolutePath()),
+                "audio/aac",
+                path
             );
             if ((recordDataBase64 == null && path == null) || recordData.getMsDuration() < 0) {
                 throw new MessagesException(Messages.EMPTY_RECORDING);

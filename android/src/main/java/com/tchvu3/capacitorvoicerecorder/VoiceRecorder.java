@@ -21,15 +21,16 @@ import com.getcapacitor.annotation.Permission;
 import com.getcapacitor.annotation.PermissionCallback;
 
 @CapacitorPlugin(
-        name = "VoiceRecorder",
-        permissions = {
-                @Permission(
-                        alias = VoiceRecorder.RECORD_AUDIO_ALIAS,
-                        strings = {Manifest.permission.RECORD_AUDIO, Manifest.permission.POST_NOTIFICATIONS}
-                )
-        }
+    name = "VoiceRecorder",
+    permissions = {
+        @Permission(
+            alias = VoiceRecorder.RECORD_AUDIO_ALIAS,
+            strings = { Manifest.permission.RECORD_AUDIO, Manifest.permission.POST_NOTIFICATIONS }
+        )
+    }
 )
 public class VoiceRecorder extends Plugin {
+
     static final String RECORD_AUDIO_ALIAS = "voice recording";
     private VoiceRecorderService recorderService;
     private boolean bound = false;
@@ -88,9 +89,7 @@ public class VoiceRecorder extends Plugin {
             context.startService(intent);
         }
 
-        new Handler(Looper.getMainLooper()).post(() ->
-                context.bindService(intent, connection, 0)
-        );
+        new Handler(Looper.getMainLooper()).post(() -> context.bindService(intent, connection, 0));
     }
 
     @PluginMethod

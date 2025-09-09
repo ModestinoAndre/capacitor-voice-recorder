@@ -6,7 +6,7 @@ struct RecordOptions {
     var subDirectory: String?
 
     mutating func setSubDirectory(to subDirectory: String) {
-      self.subDirectory = subDirectory
+        self.subDirectory = subDirectory
     }
 
 }
