@@ -150,7 +150,7 @@ class CustomMediaRecorder {
     }
 
     @objc private func handleEnterBackground() {
-        if backgroundTask == .invalid {
+        if status == CurrentRecordingStatus.RECORDING && backgroundTask == .invalid {
             backgroundTask = UIApplication.shared.beginBackgroundTask(withName: "VoiceRecorder") {
                 UIApplication.shared.endBackgroundTask(self.backgroundTask)
                 self.backgroundTask = .invalid
