@@ -132,6 +132,9 @@ class CustomMediaRecorder {
             let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt
             let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue ?? 0)
             if options.contains(.shouldResume) {
+                do {
+                    try recordingSession.setActive(true)
+                } catch {}
                 _ = resumeRecording()
             }
         }
