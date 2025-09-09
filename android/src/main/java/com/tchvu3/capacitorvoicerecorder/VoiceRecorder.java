@@ -180,7 +180,7 @@ public class VoiceRecorder extends Plugin {
         if (bound) {
             try {
                 context.unbindService(connection);
-            } catch (IllegalArgumentException ignored) {
+            } catch (IllegalArgumentException e) {
                 Log.d("VoiceRecorder", "Attempted to unbind service, but it was already unbound.", e);
             }
             bound = false;
