@@ -1,4 +1,3 @@
-import type { PluginListenerHandle } from '@capacitor/core';
 import type { Directory } from '@capacitor/filesystem';
 export declare type Base64String = string;
 export interface RecordingData {
@@ -35,5 +34,4 @@ export interface VoiceRecorderPlugin {
     pauseRecording(): Promise<GenericResponse>;
     resumeRecording(): Promise<GenericResponse>;
     getCurrentStatus(): Promise<CurrentRecordingStatus>;
-    addListener(eventName: 'recordingStatusChange', listenerFunc: (status: CurrentRecordingStatus) => void): Promise<PluginListenerHandle>;
 }

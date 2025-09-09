@@ -42,10 +42,6 @@ public class VoiceRecorder: CAPPlugin {
             return
         }
 
-        customMediaRecorder?.statusCallback = { [weak self] status in
-            self?.notifyListeners("recordingStatusChange", data: ResponseGenerator.statusResponse(status))
-        }
-
         let directory: String? = call.getString("directory")
         let subDirectory: String? = call.getString("subDirectory")
         let recordOptions = RecordOptions(directory: directory, subDirectory: subDirectory)

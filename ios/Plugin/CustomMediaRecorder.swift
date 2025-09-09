@@ -10,7 +10,6 @@ class CustomMediaRecorder {
     private var audioFilePath: URL!
     private var originalRecordingSessionCategory: AVAudioSession.Category!
     private var status = CurrentRecordingStatus.NONE
-    var statusCallback: ((CurrentRecordingStatus) -> Void)?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
 
     private let settings = [
@@ -53,7 +52,6 @@ class CustomMediaRecorder {
             audioRecorder = try AVAudioRecorder(url: audioFilePath, settings: settings)
             audioRecorder.record()
             status = CurrentRecordingStatus.RECORDING
-            statusCallback?(status)
             NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: AVAudioSession.interruptionNotification, object: recordingSession)
             NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange), name: AVAudioSession.routeChangeNotification, object: recordingSession)
             NotificationCenter.default.addObserver(self, selector: #selector(handleEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
@@ -73,7 +71,6 @@ class CustomMediaRecorder {
             audioRecorder = nil
             recordingSession = nil
             status = CurrentRecordingStatus.NONE
-            statusCallback?(status)
             NotificationCenter.default.removeObserver(self)
             if backgroundTask != .invalid {
                 UIApplication.shared.endBackgroundTask(backgroundTask)
@@ -104,7 +101,6 @@ class CustomMediaRecorder {
         if status == CurrentRecordingStatus.RECORDING {
             audioRecorder.pause()
             status = CurrentRecordingStatus.PAUSED
-            statusCallback?(status)
             return true
         } else {
             return false
@@ -115,7 +111,6 @@ class CustomMediaRecorder {
         if status == CurrentRecordingStatus.PAUSED {
             audioRecorder.record()
             status = CurrentRecordingStatus.RECORDING
-            statusCallback?(status)
             return true
         } else {
             return false

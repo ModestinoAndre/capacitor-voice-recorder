@@ -107,30 +107,6 @@
           "CurrentRecordingStatus"
         ],
         "slug": "getcurrentstatus"
-      },
-      {
-        "name": "addListener",
-        "signature": "(eventName: 'recordingStatusChange', listenerFunc: (status: CurrentRecordingStatus) => void) => Promise<PluginListenerHandle>",
-        "parameters": [
-          {
-            "name": "eventName",
-            "docs": "",
-            "type": "'recordingStatusChange'"
-          },
-          {
-            "name": "listenerFunc",
-            "docs": "",
-            "type": "(status: CurrentRecordingStatus) => void"
-          }
-        ],
-        "returns": "Promise<PluginListenerHandle>",
-        "tags": [],
-        "docs": "",
-        "complexTypes": [
-          "PluginListenerHandle",
-          "CurrentRecordingStatus"
-        ],
-        "slug": "addlistenerrecordingstatuschange-"
       }
     ],
     "properties": []
@@ -183,22 +159,6 @@
           "docs": "",
           "complexTypes": [],
           "type": "'RECORDING' | 'PAUSED' | 'NONE'"
-        }
-      ]
-    },
-    {
-      "name": "PluginListenerHandle",
-      "slug": "pluginlistenerhandle",
-      "docs": "",
-      "tags": [],
-      "methods": [],
-      "properties": [
-        {
-          "name": "remove",
-          "tags": [],
-          "docs": "",
-          "complexTypes": [],
-          "type": "() => Promise<void>"
         }
       ]
     }
