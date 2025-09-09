@@ -1,8 +1,16 @@
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/236501/85893648-1c92e880-b7a8-11ea-926d-95355b8175c7.png" width="128" height="128" />
+  <img
+    src="https://user-images.githubusercontent.com/236501/85893648-1c92e880-b7a8-11ea-926d-95355b8175c7.png"
+    width="128"
+    height="128"
+  />
 </p>
 <h3 align="center">Capacitor Voice Recorder</h3>
-<p align="center"><strong><code>tchvu3/capacitor-voice-recorder</code></strong></p>
+<p align="center">
+  <strong>
+    <code>tchvu3/capacitor-voice-recorder</code>
+  </strong>
+</p>
 <p align="center">Capacitor plugin for simple voice recording</p>
 
 <p align="center">
@@ -16,7 +24,7 @@
 ## Maintainers
 
 | Maintainer   | GitHub                              |
-|--------------|-------------------------------------|
+| ------------ | ----------------------------------- |
 | Avihu Harush | [tchvu3](https://github.com/tchvu3) |
 
 ## Installation
@@ -44,20 +52,29 @@ Add the following to your `Info.plist`:
 
 <key>NSMicrophoneUsageDescription</key>
 <string>This app uses the microphone to record audio.</string>
+<key>UIBackgroundModes</key>
+<array>
+  <string>audio</string>
+</array>
 ```
+
+Enabling the `audio` background mode allows recordings to continue while the app
+is backgrounded. Recordings pause for system interruptions (such as phone calls)
+and attempt to resume when possible. iOS does not allow recording after the app
+is force-closed by the user.
 
 ## Supported methods
 
 | Name                            | Android | iOS | Web |
-|:--------------------------------|:--------|:----|:----|
-| canDeviceVoiceRecord            | ✅       | ✅   | ✅   |
-| requestAudioRecordingPermission | ✅       | ✅   | ✅   |
-| hasAudioRecordingPermission     | ✅       | ✅   | ✅   |
-| startRecording                  | ✅       | ✅   | ✅   |
-| stopRecording                   | ✅       | ✅   | ✅   |
-| pauseRecording                  | ✅       | ✅   | ✅   |
-| resumeRecording                 | ✅       | ✅   | ✅   |
-| getCurrentStatus                | ✅       | ✅   | ✅   |
+| :------------------------------ | :------ | :-- | :-- |
+| canDeviceVoiceRecord            | ✅      | ✅  | ✅  |
+| requestAudioRecordingPermission | ✅      | ✅  | ✅  |
+| hasAudioRecordingPermission     | ✅      | ✅  | ✅  |
+| startRecording                  | ✅      | ✅  | ✅  |
+| stopRecording                   | ✅      | ✅  | ✅  |
+| pauseRecording                  | ✅      | ✅  | ✅  |
+| resumeRecording                 | ✅      | ✅  | ✅  |
+| getCurrentStatus                | ✅      | ✅  | ✅  |
 
 ## Overview
 
@@ -76,7 +93,7 @@ VoiceRecorder.canDeviceVoiceRecord().then((result: GenericResponse) => console.l
 ```
 
 | Return Value       | Description                                                                            |
-|--------------------|----------------------------------------------------------------------------------------|
+| ------------------ | -------------------------------------------------------------------------------------- |
 | `{ value: true }`  | The device/browser can record audio.                                                   |
 | `{ value: false }` | The browser cannot record audio. Note: On mobile, it always returns `{ value: true }`. |
 
@@ -89,7 +106,7 @@ VoiceRecorder.requestAudioRecordingPermission().then((result: GenericResponse) =
 ```
 
 | Return Value       | Description         |
-|--------------------|---------------------|
+| ------------------ | ------------------- |
 | `{ value: true }`  | Permission granted. |
 | `{ value: false }` | Permission denied.  |
 
@@ -102,12 +119,12 @@ VoiceRecorder.hasAudioRecordingPermission().then((result: GenericResponse) => co
 ```
 
 | Return Value       | Description         |
-|--------------------|---------------------|
+| ------------------ | ------------------- |
 | `{ value: true }`  | Permission granted. |
 | `{ value: false }` | Permission denied.  |
 
 | Error Code                          | Description                        |
-|-------------------------------------|------------------------------------|
+| ----------------------------------- | ---------------------------------- |
 | `COULD_NOT_QUERY_PERMISSION_STATUS` | Failed to query permission status. |
 
 ### Managing Recording
@@ -125,17 +142,17 @@ VoiceRecorder.startRecording(options?: RecordingOptions)
     .catch(error => console.log(error));
 ```
 
-| Option            | Description                                                                                          |
-|-------------------|------------------------------------------------------------------------------------------------------|
-| directory         | Specifies a Capacitor Filesystem [Directory](https://capacitorjs.com/docs/apis/filesystem#directory) |
-| subDirectory      | Specifies a custom sub-directory (optional)                                                          |
+| Option       | Description                                                                                          |
+| ------------ | ---------------------------------------------------------------------------------------------------- |
+| directory    | Specifies a Capacitor Filesystem [Directory](https://capacitorjs.com/docs/apis/filesystem#directory) |
+| subDirectory | Specifies a custom sub-directory (optional)                                                          |
 
 | Return Value      | Description                     |
-|-------------------|---------------------------------|
+| ----------------- | ------------------------------- |
 | `{ value: true }` | Recording started successfully. |
 
 | Error Code                   | Description                              |
-|------------------------------|------------------------------------------|
+| ---------------------------- | ---------------------------------------- |
 | `MISSING_PERMISSION`         | Required permission is missing.          |
 | `DEVICE_CANNOT_VOICE_RECORD` | Device/browser cannot record audio.      |
 | `ALREADY_RECORDING`          | A recording is already in progress.      |
@@ -150,19 +167,19 @@ When a `directory` option has been passed to the `VoiceRecorder.startRecording` 
 
 ```typescript
 VoiceRecorder.stopRecording()
-    .then((result: RecordingData) => console.log(result.value))
-    .catch(error => console.log(error));
+  .then((result: RecordingData) => console.log(result.value))
+  .catch((error) => console.log(error));
 ```
 
 | Return Value       | Description                                    |
-|--------------------|------------------------------------------------|
+| ------------------ | ---------------------------------------------- |
 | `recordDataBase64` | The recorded audio data in Base64 format.      |
 | `msDuration`       | The duration of the recording in milliseconds. |
 | `mimeType`         | The MIME type of the recorded audio.           |
 | `path`             | The path to the audio file                     |
 
 | Error Code                  | Description                                          |
-|-----------------------------|------------------------------------------------------|
+| --------------------------- | ---------------------------------------------------- |
 | `RECORDING_HAS_NOT_STARTED` | No recording in progress.                            |
 | `EMPTY_RECORDING`           | Recording stopped immediately after starting.        |
 | `FAILED_TO_FETCH_RECORDING` | Unknown error occurred while fetching the recording. |
@@ -173,17 +190,17 @@ Pause the ongoing audio recording.
 
 ```typescript
 VoiceRecorder.pauseRecording()
-    .then((result: GenericResponse) => console.log(result.value))
-    .catch(error => console.log(error));
+  .then((result: GenericResponse) => console.log(result.value))
+  .catch((error) => console.log(error));
 ```
 
 | Return Value       | Description                    |
-|--------------------|--------------------------------|
+| ------------------ | ------------------------------ |
 | `{ value: true }`  | Recording paused successfully. |
 | `{ value: false }` | Recording is already paused.   |
 
 | Error Code                  | Description                                        |
-|-----------------------------|----------------------------------------------------|
+| --------------------------- | -------------------------------------------------- |
 | `RECORDING_HAS_NOT_STARTED` | No recording in progress.                          |
 | `NOT_SUPPORTED_OS_VERSION`  | Operation not supported on the current OS version. |
 
@@ -193,17 +210,17 @@ Resumes a paused audio recording.
 
 ```typescript
 VoiceRecorder.resumeRecording()
-    .then((result: GenericResponse) => console.log(result.value))
-    .catch(error => console.log(error));
+  .then((result: GenericResponse) => console.log(result.value))
+  .catch((error) => console.log(error));
 ```
 
 | Return Value       | Description                     |
-|--------------------|---------------------------------|
+| ------------------ | ------------------------------- |
 | `{ value: true }`  | Recording resumed successfully. |
 | `{ value: false }` | Recording is already running.   |
 
 | Error Code                  | Description                                        |
-|-----------------------------|----------------------------------------------------|
+| --------------------------- | -------------------------------------------------- |
 | `RECORDING_HAS_NOT_STARTED` | No recording in progress.                          |
 | `NOT_SUPPORTED_OS_VERSION`  | Operation not supported on the current OS version. |
 
@@ -213,12 +230,12 @@ Retrieves the current status of the recorder.
 
 ```typescript
 VoiceRecorder.getCurrentStatus()
-    .then((result: CurrentRecordingStatus) => console.log(result.status))
-    .catch(error => console.log(error));
+  .then((result: CurrentRecordingStatus) => console.log(result.status))
+  .catch((error) => console.log(error));
 ```
 
 | Status Code | Description                                          |
-|-------------|------------------------------------------------------|
+| ----------- | ---------------------------------------------------- |
 | `NONE`      | Plugin is idle and waiting to start a new recording. |
 | `RECORDING` | Plugin is currently recording.                       |
 | `PAUSED`    | Recording is paused.                                 |
@@ -243,48 +260,52 @@ As this plugin focuses on the recording aspect, it does not provide any conversi
 To play the recorded file, you can use plain JavaScript:
 
 ### With Base64 string
+
 ```typescript
-const base64Sound = '...' // from plugin
-const mimeType = '...'  // from plugin
-const audioRef = new Audio(`data:${mimeType};base64,${base64Sound}`)
-audioRef.oncanplaythrough = () => audioRef.play()
-audioRef.load()
+const base64Sound = '...'; // from plugin
+const mimeType = '...'; // from plugin
+const audioRef = new Audio(`data:${mimeType};base64,${base64Sound}`);
+audioRef.oncanplaythrough = () => audioRef.play();
+audioRef.load();
 ```
 
 ### With Blob
-```typescript
-import { Capacitor } from '@capacitor/core'
-import { Directory, Filesystem } from '@capacitor/filesystem'
 
-const PATH = '...' // from plugin
+```typescript
+import { Capacitor } from '@capacitor/core';
+import { Directory, Filesystem } from '@capacitor/filesystem';
+
+const PATH = '...'; // from plugin
 
 /** Generate a URL to the blob file with @capacitor/core and @capacitor/filesystem */
 const getBlobURL = async (path: string) => {
-  const directory = Directory.Data // Same Directory as the one you used with VoiceRecorder.startRecording
+  const directory = Directory.Data; // Same Directory as the one you used with VoiceRecorder.startRecording
 
   if (config.public.platform === 'web') {
-    const { data } = await Filesystem.readFile({ directory, path })
-    return URL.createObjectURL(data)
+    const { data } = await Filesystem.readFile({ directory, path });
+    return URL.createObjectURL(data);
   }
 
-  const { uri } = await Filesystem.getUri({ directory, path })
-  return Capacitor.convertFileSrc(uri)
-}
+  const { uri } = await Filesystem.getUri({ directory, path });
+  return Capacitor.convertFileSrc(uri);
+};
 
 /** Read the audio file */
 const play = async () => {
-  const url = await getBlobURL(PATH)
-  const audioRef = new Audio(url)
-  audioRef.onended = () => { URL.revokeObjectUrl(url) }
-  audioRef.play()
-}
+  const url = await getBlobURL(PATH);
+  const audioRef = new Audio(url);
+  audioRef.onended = () => {
+    URL.revokeObjectUrl(url);
+  };
+  audioRef.play();
+};
 
 /** Load the audio file (ie: to send to a Cloud Storage service) */
 const load = async () => {
-  const url = await getBlobURL(PATH)
-  const response = await fetch(url)
-  return response.blob()
-}
+  const url = await getBlobURL(PATH);
+  const response = await fetch(url);
+  return response.blob();
+};
 ```
 
 ## Compatibility
@@ -294,10 +315,10 @@ Major versions of the plugin are compatible with major versions of Capacitor.
 You can find each version in its own dedicated branch.
 
 | Plugin Version | Capacitor Version |
-|----------------|-------------------|
-| 5.*            | 5                 |
-| 6.*            | 6                 |
-| 7.*            | 7                 |
+| -------------- | ----------------- |
+| 5.\*           | 5                 |
+| 6.\*           | 6                 |
+| 7.\*           | 7                 |
 
 ## Donation
 
