@@ -42,7 +42,7 @@ class VoiceRecorderImpl {
     }
     static async canDeviceVoiceRecord() {
         var _a;
-        if (((_a = navigator === null || navigator === void 0 ? void 0 : navigator.mediaDevices) === null || _a === void 0 ? void 0 : _a.getUserMedia) == null || VoiceRecorderImpl.getSupportedMimeType() == null) {
+        if (((_a = navigator === null || navigator === undefined ? undefined : navigator.mediaDevices) === null || _a === undefined ? undefined : _a.getUserMedia) == null || VoiceRecorderImpl.getSupportedMimeType() == null) {
             return failureResponse();
         }
         else {
@@ -150,10 +150,10 @@ class VoiceRecorderImpl {
         }
     }
     static getSupportedMimeType() {
-        if ((MediaRecorder === null || MediaRecorder === void 0 ? void 0 : MediaRecorder.isTypeSupported) == null)
+        if ((MediaRecorder === null || MediaRecorder === undefined ? undefined : MediaRecorder.isTypeSupported) == null)
             return null;
         const foundSupportedType = Object.keys(POSSIBLE_MIME_TYPES).find((type) => MediaRecorder.isTypeSupported(type));
-        return foundSupportedType !== null && foundSupportedType !== void 0 ? foundSupportedType : null;
+        return foundSupportedType !== null && foundSupportedType !== undefined ? foundSupportedType : null;
     }
     onSuccessfullyStartedRecording(stream, options) {
         this.pendingResult = new Promise((resolve, reject) => {
@@ -179,7 +179,7 @@ class VoiceRecorderImpl {
                 let path;
                 let recordDataBase64;
                 if (options != null) {
-                    const subDirectory = (_c = (_b = (_a = options.subDirectory) === null || _a === void 0 ? void 0 : _a.match(/^\/?(.+[^/])\/?$/)) === null || _b === void 0 ? void 0 : _b[1]) !== null && _c !== void 0 ? _c : '';
+                    const subDirectory = (_c = (_b = (_a = options.subDirectory) === null || _a === undefined ? undefined : _a.match(/^\/?(.+[^/])\/?$/)) === null || _b === undefined ? undefined : _b[1]) !== null && _c !== undefined ? _c : '';
                     path = `${subDirectory}/recording-${new Date().getTime()}${POSSIBLE_MIME_TYPES[mimeType]}`;
                     await write_blob({
                         blob: blobVoiceRecording,
