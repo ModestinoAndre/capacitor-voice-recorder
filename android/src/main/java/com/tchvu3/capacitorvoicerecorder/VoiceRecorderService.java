@@ -27,7 +27,6 @@ public class VoiceRecorderService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("VoiceRecorderService", "onStartCommand called");
         String directory = intent != null ? intent.getStringExtra("directory") : null;
         String subDirectory = intent != null ? intent.getStringExtra("subDirectory") : null;
         options = new RecordOptions(directory, subDirectory);
@@ -47,13 +46,12 @@ public class VoiceRecorderService extends Service {
         try {
             stopRecording();
         } catch (Exception e) {
-           // Do nothing
+            Log.e("VoiceRecorderService", "Exception while stopping recording in onDestroy", e);
         }
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d("VoiceRecorderService", "onBind called");
         return binder;
     }
 

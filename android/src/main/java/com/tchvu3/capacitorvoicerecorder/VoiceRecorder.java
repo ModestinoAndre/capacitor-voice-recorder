@@ -38,7 +38,6 @@ public class VoiceRecorder extends Plugin {
     private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d("VoiceRecorder", "onServiceConnected called");
             VoiceRecorderService.LocalBinder binder = (VoiceRecorderService.LocalBinder) service;
             recorderService = binder.getService();
             bound = true;
@@ -182,7 +181,7 @@ public class VoiceRecorder extends Plugin {
             try {
                 context.unbindService(connection);
             } catch (IllegalArgumentException ignored) {
-                // Already unbound, safe to ignore
+                Log.d("VoiceRecorder", "Attempted to unbind service, but it was already unbound.", e);
             }
             bound = false;
             recorderService = null;
