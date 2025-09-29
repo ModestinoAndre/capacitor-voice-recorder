@@ -170,7 +170,7 @@ public class VoiceRecorder extends Plugin {
                 call.reject(e.getMessage(), e);
             }
         } else {
-            call.reject(Messages.FAILED_TO_FETCH_RECORDING);
+            call.reject(Messages.PLUGIN_UNBOUND);
         }
 
         Intent intent = new Intent(context, VoiceRecorderService.class);
