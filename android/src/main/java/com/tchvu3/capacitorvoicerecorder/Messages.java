@@ -12,5 +12,4 @@ public abstract class Messages {
     public static final String EMPTY_RECORDING = "EMPTY_RECORDING";
     public static final String MICROPHONE_BEING_USED = "MICROPHONE_BEING_USED";
     public static final String PLUGIN_UNBOUND = "PLUGIN_UNBOUND";
-
 }
