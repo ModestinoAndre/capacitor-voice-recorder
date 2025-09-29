@@ -33,7 +33,7 @@ public class VoiceRecorder extends Plugin {
 
     static final String RECORD_AUDIO_ALIAS = "voice recording";
     private VoiceRecorderService recorderService;
-    private boolean bound = false;
+    private ServiceState serviceState = ServiceState.INITIAL;
     private PluginCall startCall;
 
     private final ServiceConnection connection = new ServiceConnection() {
@@ -41,7 +41,7 @@ public class VoiceRecorder extends Plugin {
         public void onServiceConnected(ComponentName className, IBinder service) {
             VoiceRecorderService.LocalBinder binder = (VoiceRecorderService.LocalBinder) service;
             recorderService = binder.getService();
-            bound = true;
+            serviceState = ServiceState.CONNECTED;
 
             if (startCall != null) {
                 try {
@@ -56,13 +56,13 @@ public class VoiceRecorder extends Plugin {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            bound = false;
+            serviceState = ServiceState.DISCONNECTED;
             recorderService = null;
         }
     };
 
     private CustomMediaRecorder getMediaRecorder() {
-        if (bound) {
+        if (serviceState == ServiceState.CONNECTED) {
             return recorderService.getMediaRecorder();
         }
         return null;
@@ -70,6 +70,8 @@ public class VoiceRecorder extends Plugin {
 
     @Override
     public void load() {
+        serviceState = ServiceState.INITIAL;
+
         Context context = getContext();
         Intent intent = new Intent(context, VoiceRecorderService.class);
         context.bindService(intent, connection, 0);
@@ -88,6 +90,9 @@ public class VoiceRecorder extends Plugin {
         } else {
             context.startService(intent);
         }
+
+        serviceState = ServiceState.STARTED;
+        recorderService = null;
 
         new Handler(Looper.getMainLooper()).post(() -> context.bindService(intent, connection, 0));
     }
@@ -162,7 +167,7 @@ public class VoiceRecorder extends Plugin {
     public void stopRecording(PluginCall call) {
         Context context = getContext();
 
-        if (bound) {
+        if (serviceState == ServiceState.CONNECTED) {
             try {
                 JSObject obj = recorderService.stopRecording();
                 call.resolve(obj);
@@ -170,20 +175,18 @@ public class VoiceRecorder extends Plugin {
                 call.reject(e.getMessage(), e);
             }
         } else {
-            call.reject(Messages.PLUGIN_UNBOUND);
+            call.reject(Messages.PLUGIN_UNBOUND + ": " + serviceState);
         }
 
         Intent intent = new Intent(context, VoiceRecorderService.class);
         context.stopService(intent);
 
-        if (bound) {
+        if (serviceState == ServiceState.CONNECTED) {
             try {
                 context.unbindService(connection);
             } catch (IllegalArgumentException e) {
                 Log.d("VoiceRecorder", "Attempted to unbind service, but it was already unbound.", e);
             }
-            bound = false;
-            recorderService = null;
         }
     }
 
