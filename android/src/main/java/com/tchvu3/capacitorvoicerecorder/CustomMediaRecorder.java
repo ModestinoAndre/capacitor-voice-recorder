@@ -16,10 +16,12 @@ public class CustomMediaRecorder {
     private MediaRecorder mediaRecorder;
     private File outputFile;
     private CurrentRecordingStatus currentRecordingStatus = CurrentRecordingStatus.NONE;
+    private ErrorInfo errorInfo;
 
     public CustomMediaRecorder(Context context, RecordOptions options) throws IOException {
         this.context = context;
         this.options = options;
+        errorInfo = null;
         generateMediaRecorder();
     }
 
@@ -31,6 +33,8 @@ public class CustomMediaRecorder {
         mediaRecorder.setAudioEncodingBitRate(96000);
         mediaRecorder.setAudioSamplingRate(44100);
         setRecorderOutputFile();
+
+        mediaRecorder.setOnErrorListener((mediaRecorder, what, extra) -> errorInfo = new ErrorInfo(what, extra));
         mediaRecorder.prepare();
     }
 
@@ -83,6 +87,10 @@ public class CustomMediaRecorder {
         mediaRecorder.stop();
         mediaRecorder.release();
         currentRecordingStatus = CurrentRecordingStatus.NONE;
+    }
+
+    public ErrorInfo getErrorInfo() {
+        return errorInfo;
     }
 
     public File getOutputFile() {
