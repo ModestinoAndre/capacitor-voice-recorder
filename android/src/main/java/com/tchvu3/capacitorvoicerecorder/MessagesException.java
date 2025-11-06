@@ -16,12 +16,12 @@ public class MessagesException extends Exception {
     public JSObject toJSObject() {
         JSObject toReturn = new JSObject();
         toReturn.put("message", this.getMessage());
-        JSONArray messagesArray = getAllMessages();
-        toReturn.put("causes", messagesArray);
+        JSONArray causeMessagesArray = getCauseMessages();
+        toReturn.put("causes", causeMessagesArray);
         return toReturn;
     }
 
-    private JSONArray getAllMessages() {
+    private JSONArray getCauseMessages() {
         JSONArray messages = new JSONArray();
         Throwable current = getCause();
         while (current != null) {
