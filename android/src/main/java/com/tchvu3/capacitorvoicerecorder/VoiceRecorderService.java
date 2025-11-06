@@ -16,7 +16,6 @@ import java.io.IOException;
 public class VoiceRecorderService extends Service {
 
     private final IBinder binder = new LocalBinder();
-    private RecordOptions options;
 
     public class LocalBinder extends Binder {
 
@@ -27,10 +26,6 @@ public class VoiceRecorderService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String directory = intent != null ? intent.getStringExtra("directory") : null;
-        String subDirectory = intent != null ? intent.getStringExtra("subDirectory") : null;
-        options = new RecordOptions(directory, subDirectory);
-
         String title = intent != null ? intent.getStringExtra("title") : null;
         String message = intent != null ? intent.getStringExtra("message") : null;
         startForeground(1, VoiceRecorderNotification.createNotification(this, title, message));
@@ -58,9 +53,15 @@ public class VoiceRecorderService extends Service {
         return mediaRecorder;
     }
 
-    public void startRecording() throws IOException {
-        mediaRecorder = new CustomMediaRecorder(getApplicationContext(), options);
-        mediaRecorder.startRecording();
+    public void startRecording(String directory, String subDirectory) throws MessagesException {
+        try {
+            RecordOptions options = new RecordOptions(directory, subDirectory);
+            mediaRecorder = new CustomMediaRecorder(getApplicationContext(), options);
+            mediaRecorder.startRecording();
+        } catch (Exception exp) {
+            mediaRecorder = null;
+            throw new MessagesException(Messages.FAILED_TO_RECORD, exp);
+        }
     }
 
     public JSObject stopRecording() throws MessagesException {
@@ -69,6 +70,10 @@ public class VoiceRecorderService extends Service {
         }
 
         try {
+            if (mediaRecorder.getErrorInfo() != null) {
+                throw new MessagesException(Messages.RUNTIME_FAILED + " error info: " + mediaRecorder.getErrorInfo());
+            }
+
             mediaRecorder.stopRecording();
             File recordedFile = mediaRecorder.getOutputFile();
             RecordOptions options = mediaRecorder.getRecordOptions();
@@ -125,7 +130,9 @@ public class VoiceRecorderService extends Service {
             MediaPlayer mediaPlayer = new MediaPlayer();
             mediaPlayer.setDataSource(recordedFilePath);
             mediaPlayer.prepare();
-            return mediaPlayer.getDuration();
+            int duration = mediaPlayer.getDuration();
+            mediaPlayer.release();
+            return duration;
         } catch (Exception ignore) {
             return -1;
         }
