@@ -130,10 +130,7 @@ public class VoiceRecorder extends Plugin {
             startServiceByCall(call);
         } catch (Exception exp) {
             call.reject(Messages.FAILED_TO_RECORD, exp);
-
-            Context context = getContext();
-            Intent intent = new Intent(context, VoiceRecorderService.class);
-            context.stopService(intent);
+            unbindAndStopService();
         }
     }
 
@@ -181,9 +178,12 @@ public class VoiceRecorder extends Plugin {
             call.reject(e.getMessage(), e.toJSObject());
         }
 
+        unbindAndStopService();
+    }
+
+    private void unbindAndStopService() {
         Context context = getContext();
         Intent intent = new Intent(context, VoiceRecorderService.class);
-        context.stopService(intent);
 
         try {
             context.unbindService(connection);
@@ -192,6 +192,8 @@ public class VoiceRecorder extends Plugin {
         } finally {
             isConnected = false;
         }
+
+        context.stopService(intent);
     }
 
     @PluginMethod
