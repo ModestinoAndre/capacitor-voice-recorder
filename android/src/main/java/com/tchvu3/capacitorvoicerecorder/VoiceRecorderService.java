@@ -55,10 +55,12 @@ public class VoiceRecorderService extends Service {
 
     public void startRecording(String directory, String subDirectory) throws MessagesException {
         try {
+            Log.i("VoiceRecorderService", "startRecording");
             RecordOptions options = new RecordOptions(directory, subDirectory);
             mediaRecorder = new CustomMediaRecorder(getApplicationContext(), options);
             mediaRecorder.startRecording();
         } catch (Exception exp) {
+            Log.e("VoiceRecorderService", "startRecording", exp);
             mediaRecorder = null;
             throw new MessagesException(Messages.FAILED_TO_RECORD, exp);
         }
@@ -66,11 +68,13 @@ public class VoiceRecorderService extends Service {
 
     public JSObject stopRecording() throws MessagesException {
         if (mediaRecorder == null) {
+            Log.w("VoiceRecorderService", "stopRecording - RECORDING_HAS_NOT_STARTED");
             throw new MessagesException(Messages.RECORDING_HAS_NOT_STARTED);
         }
 
         try {
             if (mediaRecorder.getErrorInfo() != null) {
+                Log.e("VoiceRecorderService", "stopRecording - errorInfo: " + mediaRecorder.getErrorInfo().toString());
                 throw new MessagesException(Messages.RUNTIME_FAILED + " error info: " + mediaRecorder.getErrorInfo());
             }
 
@@ -101,6 +105,7 @@ public class VoiceRecorderService extends Service {
                 return ResponseGenerator.dataResponse(recordData.toJSObject());
             }
         } catch (Exception exp) {
+            Log.e("VoiceRecorderService", "stopRecording - FAILED_TO_FETCH_RECORDING", exp);
             throw new MessagesException(Messages.FAILED_TO_FETCH_RECORDING, exp);
         } finally {
             RecordOptions options = mediaRecorder.getRecordOptions();
@@ -109,6 +114,7 @@ public class VoiceRecorderService extends Service {
             }
 
             mediaRecorder = null;
+            Log.i("VoiceRecorderService", "stopRecording - stopped");
         }
     }
 
