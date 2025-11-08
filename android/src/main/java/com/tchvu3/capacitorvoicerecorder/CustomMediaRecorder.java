@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import android.util.Log;
 
 public class CustomMediaRecorder {
 
@@ -34,7 +35,10 @@ public class CustomMediaRecorder {
         mediaRecorder.setAudioSamplingRate(44100);
         setRecorderOutputFile();
 
-        mediaRecorder.setOnErrorListener((mediaRecorder, what, extra) -> errorInfo = new ErrorInfo(what, extra));
+        mediaRecorder.setOnErrorListener((mediaRecorder, what, extra) -> {
+            errorInfo = new ErrorInfo(what, extra);
+            Log.e("CustomMediaRecorder", "setOnErrorListener - errorInfo: " + errorInfo);
+        });
         mediaRecorder.prepare();
     }
 

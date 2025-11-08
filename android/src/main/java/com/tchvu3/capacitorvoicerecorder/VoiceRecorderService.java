@@ -74,6 +74,11 @@ public class VoiceRecorderService extends Service {
 
         try {
             if (mediaRecorder.getErrorInfo() != null) {
+                try {
+                    mediaRecorder.stopRecording();
+                } catch (Exception exp) {
+                    Log.e("VoiceRecorderService", "mediaRecorder.stopRecording():", exp);
+                }
                 Log.e("VoiceRecorderService", "stopRecording - errorInfo: " + mediaRecorder.getErrorInfo().toString());
                 throw new MessagesException(Messages.RUNTIME_FAILED + " error info: " + mediaRecorder.getErrorInfo());
             }

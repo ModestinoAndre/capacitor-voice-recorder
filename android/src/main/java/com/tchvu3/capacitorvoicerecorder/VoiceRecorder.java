@@ -126,7 +126,7 @@ public class VoiceRecorder extends Plugin {
                 //If the user is initiating a new recording, it's because the previous recording has already been closed.
                 recorderService.stopRecording();
             } catch (Exception e) {
-                Log.i("VoiceRecorder", "Forcing stop recording.", e);
+                Log.w("VoiceRecorder", "Forcing stop recording.", e);
             }
             startRecordingByCall(call);
             return;
