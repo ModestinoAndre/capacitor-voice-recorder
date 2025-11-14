@@ -177,7 +177,7 @@
               "name": "since"
             }
           ],
-          "docs": "The Documents directory.\nOn iOS it's the app's documents directory.\nUse this directory to store user-generated content.\nOn Android it's the Public Documents folder, so it's accessible from other apps.\nIt's not accesible on Android 10 unless the app enables legacy External Storage\nby adding `android:requestLegacyExternalStorage=\"true\"` in the `application` tag\nin the `AndroidManifest.xml`.\nOn Android 11 or newer the app can only access the files/folders the app created."
+          "docs": "The Documents directory.\nOn iOS it's the app's documents directory.\nUse this directory to store user-generated content.\nOn Android it's the Public Documents folder, so it's accessible from other apps.\nIt's not accessible on Android 10 unless the app enables legacy External Storage\nby adding `android:requestLegacyExternalStorage=\"true\"` in the `application` tag\nin the `AndroidManifest.xml`.\nOn Android 11 or newer the app can only access the files/folders the app created."
         },
         {
           "name": "Data",
@@ -232,7 +232,40 @@
               "name": "since"
             }
           ],
-          "docs": "The external storage directory.\nOn iOS it will use the Documents directory.\nOn Android it's the primary shared/external storage directory.\nIt's not accesible on Android 10 unless the app enables legacy External Storage\nby adding `android:requestLegacyExternalStorage=\"true\"` in the `application` tag\nin the `AndroidManifest.xml`.\nIt's not accesible on Android 11 or newer."
+          "docs": "The external storage directory.\nOn iOS it will use the Documents directory.\nOn Android it's the primary shared/external storage directory.\nIt's not accessible on Android 10 unless the app enables legacy External Storage\nby adding `android:requestLegacyExternalStorage=\"true\"` in the `application` tag\nin the `AndroidManifest.xml`.\nIt's not accessible on Android 11 or newer."
+        },
+        {
+          "name": "ExternalCache",
+          "value": "\"EXTERNAL_CACHE\"",
+          "tags": [
+            {
+              "text": "7.1.0",
+              "name": "since"
+            }
+          ],
+          "docs": "The external cache directory.\nOn iOS it will use the Documents directory.\nOn Android it's the primary shared/external cache."
+        },
+        {
+          "name": "LibraryNoCloud",
+          "value": "\"LIBRARY_NO_CLOUD\"",
+          "tags": [
+            {
+              "text": "7.1.0",
+              "name": "since"
+            }
+          ],
+          "docs": "The Library directory without cloud backup. Used in iOS.\nOn Android it's the directory holding application files."
+        },
+        {
+          "name": "Temporary",
+          "value": "\"TEMPORARY\"",
+          "tags": [
+            {
+              "text": "7.1.0",
+              "name": "since"
+            }
+          ],
+          "docs": "A temporary directory for iOS.\nOn Android it's the directory holding the application cache."
         }
       ]
     }
