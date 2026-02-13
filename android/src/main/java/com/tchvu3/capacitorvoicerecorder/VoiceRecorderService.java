@@ -35,10 +35,12 @@ public class VoiceRecorderService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-            stopRecording();
-        } catch (Exception e) {
-            Log.e("VoiceRecorderService", "Exception while stopping recording in onDestroy", e);
+        if (mediaRecorder != null) {
+            try {
+                stopRecording();
+            } catch (Exception e) {
+                Log.e("VoiceRecorderService", "Exception while stopping recording in onDestroy", e);
+            }
         }
     }
 
